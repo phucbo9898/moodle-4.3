@@ -1,0 +1,118 @@
+{{!
+    @template local_user/manageuser
+
+
+    Example context (json):
+    {
+
+    }
+}}
+<div class="card-header">
+    <div class="d-flex justify-content-between">
+        <h1>List of user</h1>
+        {{#isLogin}}
+            <input type="button" class="btn btn-primary" value="Create user" onclick="location.href='{{urlCreateUser}}'" />
+        {{/isLogin}}
+    </div>
+</div>
+<div class="card-body">
+        <table class="table" border="1" cellspacing="0" cellpadding="0" style="margin: auto;">
+            <thead>
+                <tr>
+                    <th class="text-center" scope="col">id</th>
+                    <th class="text-center" scope="col">Avatar</th>
+                    <th class="text-center" scope="col">UserName</th>
+                    <th class="text-center" scope="col">FirstName</th>
+                    <th class="text-center" scope="col">LastName</th>
+                    <th class="text-center" scope="col">Nickname</th>
+                    <th class="text-center" scope="col">Gender</th>
+                    <th class="text-center" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#lstUser}}
+                <?php echo {{avatar}}; />
+                    <tr>
+                        <td class="text-center col-md-1">{{id}}</td>
+                        <td class="col-md-1 text-center">
+                            <div class="div-parent" style="height: 48px;">
+                                {{#avatar}}
+                                    <input class="cover-img" type="image" src="{{avatar}}" data-target="#modal_image" data-src="{{avatar}}" data-toggle="modal" alt="Image" width="48" height="48" style="object-fit: cover;">
+                                {{/avatar}}
+                            </div>
+                        </td>
+                        <td class="col-md-2 text-center">{{username}}</td>
+                        <td class="col-md-2 text-center">{{firstname}}</td>
+                        <td class="col-md-1 text-center">{{lastname}}</td>
+                        <td class="col-md-1 text-center">{{nickname}}</td>
+                        <td class="col-md-1 text-center">{{gender}}</td>
+                        <td class="text-center col-md-2">
+                            {{#isLogin}}
+                                <input type="hidden" class="url-current" value="{{urlCurrent}}"/>
+                                <input type="submit" class="btn btn-info" value="Edit" onclick="location.href='{{urlEditUser}}/{{id}}'" style="width: 90px; height:35px;" />
+                                <input type="button" class="btn btn-danger delete_msg" data-id="{{id}}" data-name="{{username}}" data-toggle="modal" data-target="#modal_confirm_delete" value="Delete" style="width: 90px; height:35px;" />
+                            {{/isLogin}}
+                        </td>
+                        <input type="hidden" class="" value="{{avatar}}" />
+                    </tr>
+                {{/lstUser}}
+            </tbody>
+        </table>
+
+        <!-- Modal image -->
+        <div class="modal fade" id="modal_image" tabindex="-1" role="dialog" aria-labelledby="modal-title-image" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <!-- <div class="modal-header">
+                <h5 class="modal-title" id="modal-title-image">Image of user</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div> -->
+              <div class="modal-body text-center">
+                <img class="image-cover" src="" alt="" width="100%" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal confirm delete -->
+        <div class="modal fade" id="modal_confirm_delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal confirm delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                    <span>Are you sure you want to delete the message</span>
+              </div>
+              <div class="modal-footer">
+                <a class="btn btn-primary delete">Delete</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+</div>
+{{#js}}
+    require(['jquery'], function () {
+        $('.delete_msg').on('click', function  () {
+            var id = $(this).data('id')
+            var name = $(this).data('name')
+            var test = $('.url-current').val() + '?id=' + id + '&isDelete=true'
+            $(".delete").attr("href", test)
+            $('.exampleModal').show();
+        })
+        $('.cover-img').on('click', function  () {
+            var src = $(this).data('src');
+            console.log(src == '')
+            $('.image-cover').attr('src', src)
+            if (src != '') {
+                $('.modal_image').show();
+            }
+        })
+    })
+{{/js}}
