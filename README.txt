@@ -26,3 +26,7 @@ Moodle is written in PHP and JavaScript and uses an SQL database for storing
 the data.
 
 See <https://docs.moodle.org> for details of Moodle's many features.
+
+<IfModule mpm_winnt_module>
+  ThreadStackSize 8888888
+</IfModule>
